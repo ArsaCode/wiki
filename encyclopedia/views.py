@@ -9,8 +9,8 @@ def index(request):
     })
 
 def page(request, title):
-    title = util.get_entry(title)
+    content = util.get_entry(title)
     return render(request, "encyclopedia/page.html", {
         "title": title,
-        "page": title
+        "page": content
     })
