@@ -13,11 +13,24 @@ class SearchForm(forms.Form):
 				            'placeholder':'Search Encyclopedia'
                             }))
 
+class CreateForm(forms.Form):
+    title = forms.CharField(label="Title of the new page",
+                            max_length=100,
+                            widget= forms.TextInput
+                            (attrs={'class':'form-control',
+				            'placeholder':'Title'
+                            }))
+    textarea = forms.CharField(label="Markdown text of the new page",
+                            max_length=1000,
+                            widget= forms.Textarea
+                            (attrs={'class':'form-control',
+                            'placeholder':'Text'
+                            }))
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries(),
-        "form": SearchForm()
+        "searchform": SearchForm()
     })
 
 def title(request, title):
@@ -26,7 +39,7 @@ def title(request, title):
         return render(request, "encyclopedia/page.html", {
         "title": title,
         "page": content,
-        "form": SearchForm()
+        "searchform": SearchForm()
         })
     else:
         return render(request, "encyclopedia/404.html")
@@ -45,7 +58,7 @@ def search(request):
                     return render(request, "encyclopedia/search.html", {
                         "search": search,
                         "searchlist": searchlist,
-                        "form": SearchForm()
+                        "searchform": SearchForm()
                     })
             else:
                 return render(request, "encyclopedia/404.html", {
@@ -53,8 +66,29 @@ def search(request):
             })
         else:
             return render(request, "encyclopedia/index.html", {
-                "form": form
+                "searchform": form
             })
     return render(request, "encyclopedia/index.html", {
-        "form": SearchForm()
+        "searchform": SearchForm()
+    })
+
+def create(request):
+    if request.method == "POST":
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            textarea = form.cleaned_data["textarea"]
+            if util.get_entry(title):
+                return HttpResponseRedirect(f"wiki/{ search }")
+            else:
+                util.save_entry(title, textarea)
+                return HttpResponseRedirect(f"wiki/{ title }")
+        else:
+            return render(request, "encyclopedia/search.html", {
+                "createform": form,
+                "searchform": SearchForm()
+            })
+    return render(request, "encyclopedia/create.html", {
+        "createform": CreateForm(),
+        "searchform": SearchForm()
     })
