@@ -10,5 +10,6 @@ def index(request):
 
 def page(request, title):
     return render(request, "encyclopedia/page.html", {
-        "title": util.get_entry(f"{{ title }}")
+        "title": title,
+        "page": util.get_entry(title)
     })
