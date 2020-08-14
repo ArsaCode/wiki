@@ -3,6 +3,7 @@ import markdown2
 from django import forms
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import random
 from . import util
 
 class SearchForm(forms.Form):
@@ -61,28 +62,28 @@ def title(request, title):
 def search(request):
     if request.method == "POST":
         form = SearchForm(request.POST)
+        searchlist = []
         if form.is_valid():
             search = form.cleaned_data["search"]
             if util.get_entry(search):
                 return HttpResponseRedirect(f"wiki/{ search }")
             for entry in util.list_entries():
-                if search.lower() in entry.lower():
-                    form = SearchForm(request.POST)
-                    searchlist = []
+                if search.lower() in entry.lower(): 
                     searchlist.append(entry)
-                    return render(request, "encyclopedia/search.html", {
+            if searchlist:
+                return render(request, "encyclopedia/search.html", {
                         "search": search,
                         "searchlist": searchlist,
                         "searchform": form
                     })
             else:
                 return render(request, "encyclopedia/404.html", {
-                    "form": form,
-                    "searchform": form
-            })
+                        "form": form,
+                        "searchform": form
+                    })
         else:
             return render(request, "encyclopedia/index.html", {
-                "searchform": form
+            "searchform": form
             })
     return render(request, "encyclopedia/index.html", {
         "searchform": SearchForm()
@@ -135,3 +136,7 @@ def edit(request, edit):
             return render(request, "encyclopedia/404.html", {
             "searchform": SearchForm() 
             })
+
+def rand(request):
+    pick = random.choice(util.list_entries())
+    return HttpResponseRedirect(f"/wiki/{ pick }")
