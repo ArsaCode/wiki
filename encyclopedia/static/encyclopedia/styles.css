@@ -11,6 +11,7 @@ h1 {
     margin-top: 0px;
     padding-top: 20px;
     margin-bottom: 25px;
+    margin-left: 20px;
 }
 
 .main {
@@ -31,7 +32,9 @@ h1 {
 }
 
 .sidebar h2 {
-    margin-top: 5px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 15px;
 }
 
 .title {
@@ -48,4 +51,8 @@ h1 {
 
 .createsubmitbtn {
     margin-top: 10px;
+}
+
+.sidelinks {
+    margin-top: 20px;
 }

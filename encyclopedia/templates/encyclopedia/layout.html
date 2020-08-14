@@ -19,14 +19,16 @@
                         <input type="submit">
                     </div>
                 </form>
-                <div>
-                    <a href="{% url 'encyclopedia:index' %}">Home</a>
-                </div>
-                <div>
-                    <a href="{% url 'encyclopedia:create' %}">Create New Page</a>
-                </div>
-                <div>
-                    <a href="{% url 'encyclopedia:rand' %}">Random Page</a>
+                <div class="sidelinks">
+                    <div>
+                        <a href="{% url 'encyclopedia:index' %}">Home</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'encyclopedia:create' %}">Create New Page</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'encyclopedia:rand' %}">Random Page</a>
+                    </div>
                 </div>
                 {% block nav %}
                 {% endblock %}
