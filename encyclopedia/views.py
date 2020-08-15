@@ -96,7 +96,12 @@ def create(request):
             title = form.cleaned_data["title"]
             textarea = form.cleaned_data["textarea"]
             if util.get_entry(title):
-                return HttpResponseRedirect(f"wiki/{ title }")
+                return render(request, "encyclopedia/create.html", {
+                    "createform": form,
+                    "searchform": SearchForm(),
+                    "flash": True,
+                    "title": title,
+                })
             else:
                 util.save_entry(title, textarea)
                 return HttpResponseRedirect(f"wiki/{ title }")

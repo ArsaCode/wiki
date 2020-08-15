@@ -6,6 +6,11 @@
 
 {% block body %}
     <h1>Create a Page</h1>
+    {% if flash %}
+        <div class="alert alert-danger" role="alert">
+        This page already exists. Check it out <a href="{% url 'encyclopedia:title' title %}">there</a>.
+        </div>
+    {% endif %}
     <form action="{% url 'encyclopedia:create' %}" method="POST">
         {% csrf_token %}
         {{ createform }}
