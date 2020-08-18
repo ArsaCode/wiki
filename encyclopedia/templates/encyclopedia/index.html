@@ -7,12 +7,10 @@
 {% block body %}
     <h1>All Pages</h1>
 
-    <ul>
         {% for entry in entries %}
-            <li>
-                <a href="{% url 'encyclopedia:title' title=entry %}">{{ entry }}</a>
-            </li>
+                <div class="btn btn-danger btn-lg my-2">
+                    <a href="{% url 'encyclopedia:title' title=entry %}">{{ entry }}</a>
+                </div>
         {% endfor %}
-    </ul>
 
 {% endblock %}
