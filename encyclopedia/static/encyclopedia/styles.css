@@ -28,9 +28,11 @@ h1 {
 
 .sidebar {
     background-color: #f0f0f0;
-    height: 100vh;
     padding: 20px;
     text-align: center;
+    height: 100%;
+    border-radius: 40px;
+    margin-top: 80px;
 }
 
 .sidebar h2 {
@@ -66,4 +68,9 @@ h1 {
 
 body a {
     color: white!important;
+    border-radius: 40px!important;
+}
+
+.btn {
+    border-radius: 40px!important;
 }

@@ -14,8 +14,6 @@
     <form action="{% url 'encyclopedia:create' %}" method="POST">
         {% csrf_token %}
         {{ createform }}
-        <div class="createsubmitbtn">
-            <input type="submit">
-        </div>
+        <input class="btn btn-danger btn-lg mt-3"type="submit" value="Create">
     </form>
 {% endblock %}

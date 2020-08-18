@@ -6,11 +6,7 @@
 
 {% block body %}
     <h1>Search Page :</h1>
-    <ul>
         {% for item in searchlist %}
-            <li>
-                <a href="wiki/{{item}}">{{ item }}</a>
-            </li>
+            <a class="btn btn-danger btn-lg text-white mx-2 my-3 py-3" href="wiki/{{item}}">{{ item }}</a>
         {% endfor %}
-    </ul>
 {% endblock %}
