@@ -11,7 +11,7 @@
     <body class="bg-dark text-white">
         <div class="row">
             <div class="sidebar bg-danger col-lg-2 col-md-3">
-                <h2>Wiki</h2>
+                <h2>WikiMF</h2>
                 <form action="{% url 'encyclopedia:search' %}" method="POST">
                     {% csrf_token %}
                     {{ searchform }}
@@ -21,13 +21,13 @@
                 </form>
                 <div class="sidelinks">
                     <div>
-                        <a class="btn btn-dark" href="{% url 'encyclopedia:index' %}">Home</a>
+                        <a class="btn btn-dark" href="{% url 'encyclopedia:index' %}">Accueil</a>
                     </div>
                     <div>
-                        <a class="btn btn-dark" href="{% url 'encyclopedia:create' %}">Create New Page</a>
+                        <a class="btn btn-dark" href="{% url 'encyclopedia:create' %}">Créer une page</a>
                     </div>
                     <div>
-                        <a class="btn btn-dark" href="{% url 'encyclopedia:rand' %}">Random Page</a>
+                        <a class="btn btn-dark" href="{% url 'encyclopedia:rand' %}">Page aléatoire</a>
                     </div>
                 </div>
             </div>
