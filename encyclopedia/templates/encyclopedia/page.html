@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+    <h2>Page : {{ title }}</h2>
     {{ page | safe }}
     <div>
         <a class="btn btn-danger btn-lg mt-4" href="{% url 'encyclopedia:edit' edit=title %}">Modifier cette page</a>
