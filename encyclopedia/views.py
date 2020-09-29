@@ -11,7 +11,7 @@ class SearchForm(forms.Form):
                             max_length=100,
                             widget= forms.TextInput
                             (attrs={'class':'search',
-				            'placeholder':'Rechercher le memo'
+				            'placeholder':'Chercher une page'
                             }))
 
 class CreateForm(forms.Form):
