@@ -29,7 +29,7 @@ class CreateForm(forms.Form):
                             }))
 
 class EditForm(forms.Form):
-    title = forms.CharField(label="Titre de la nouvelle page",
+    title = forms.CharField(label="Titre de la page",
                             max_length=100,
                             widget= forms.TextInput
                             (attrs={'class':'form-control',
@@ -119,6 +119,13 @@ def edit(request, edit):
     if request.method == "POST":
         form = EditForm(request.POST)
         if form.is_valid():
+            if not util.get_entry(title):
+                return render(request, "encyclopedia/edit.html", {
+                    "title": edit,
+                    "editform": form,
+                    "searchform": SearchForm(),
+                    "flash": "Cette page n'existe pas, veuillez la créer."
+                })
             title = form.cleaned_data["title"]
             textarea = form.cleaned_data["textarea"]
             util.save_entry(title, textarea)

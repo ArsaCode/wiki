@@ -1,11 +1,11 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Search - {{ search }}
+    Recherche - {{ search }}
 {% endblock %}
 
 {% block body %}
-    <h1>Search Page :</h1>
+    <h1>Recherche :</h1>
         {% for item in searchlist %}
             <a class="btn btn-danger btn-lg text-white mx-2 my-3 py-3" href="wiki/{{item}}">{{ item }}</a>
         {% endfor %}

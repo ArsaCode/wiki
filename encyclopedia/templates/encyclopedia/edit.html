@@ -6,6 +6,11 @@
 
 {% block body %}
     <h1>Modifier la page - {{ title }}</h1>
+    {% if flash %}
+        <div class="alert alert-danger" role="alert">
+        {{ flash }}
+        </div>
+    {% endif %}
     <form action="{% url 'encyclopedia:edit' edit=title %}" method="POST">
         {% csrf_token %}
         {{ editform }}
