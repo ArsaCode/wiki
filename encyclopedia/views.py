@@ -119,6 +119,7 @@ def edit(request, edit):
     if request.method == "POST":
         form = EditForm(request.POST)
         if form.is_valid():
+            title = form.cleaned_data["title"]
             if not util.get_entry(title):
                 return render(request, "encyclopedia/edit.html", {
                     "title": edit,
@@ -126,7 +127,6 @@ def edit(request, edit):
                     "searchform": SearchForm(),
                     "flash": "Cette page n'existe pas, veuillez la créer."
                 })
-            title = form.cleaned_data["title"]
             textarea = form.cleaned_data["textarea"]
             util.save_entry(title, textarea)
             return HttpResponseRedirect(f"/wiki/{ title }")
