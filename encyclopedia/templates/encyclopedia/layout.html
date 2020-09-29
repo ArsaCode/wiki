@@ -11,12 +11,12 @@
     <body class="bg-dark text-white">
         <div class="row">
             <div class="sidebar bg-danger col-lg-2 col-md-3">
-                <h2>WikiMF</h2>
+                <h2>MemoGDS</h2>
                 <form action="{% url 'encyclopedia:search' %}" method="POST">
                     {% csrf_token %}
                     {{ searchform }}
                     <div>
-                        <input class="btn btn-dark" type="submit" value="Search">
+                        <input class="btn btn-dark" type="submit" value="Recherche">
                     </div>
                 </form>
                 <div class="sidelinks">

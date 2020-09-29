@@ -7,39 +7,39 @@ import random
 from . import util
 
 class SearchForm(forms.Form):
-    search = forms.CharField(label="Search",
+    search = forms.CharField(label="Recherche",
                             max_length=100,
                             widget= forms.TextInput
                             (attrs={'class':'search',
-				            'placeholder':'Search Encyclopedia'
+				            'placeholder':'Rechercher le memo'
                             }))
 
 class CreateForm(forms.Form):
-    title = forms.CharField(label="Title of the new page",
+    title = forms.CharField(label="Titre de la nouvelle page",
                             max_length=100,
                             widget= forms.TextInput
                             (attrs={'class':'form-control',
-				            'placeholder':'Title'
+				            'placeholder':'Titre'
                             }))
-    textarea = forms.CharField(label="Markdown text of the new page",
+    textarea = forms.CharField(label="Texte de la page (format Markdown)",
                             max_length=1000,
                             widget= forms.Textarea
                             (attrs={'class':'form-control',
-                            'placeholder':'Text'
+                            'placeholder':'Texte'
                             }))
 
 class EditForm(forms.Form):
-    title = forms.CharField(label="Title of the new page",
+    title = forms.CharField(label="Titre de la nouvelle page",
                             max_length=100,
                             widget= forms.TextInput
                             (attrs={'class':'form-control',
-				            'placeholder':'Title'
+				            'placeholder':'Titre'
                             }))
-    textarea = forms.CharField(label="Markdown text of the new page",
+    textarea = forms.CharField(label="Texte de la page (format Markdown)",
                             max_length=1000,
                             widget= forms.Textarea
                             (attrs={'class':'form-control',
-                            'placeholder':'Text'
+                            'placeholder':'Texte'
                             }))
 
 def index(request):
