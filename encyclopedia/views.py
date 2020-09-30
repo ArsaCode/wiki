@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.db.models import Max
 import random
 
-from . import util
 from .models import User, Entry
 
 class SearchForm(forms.Form):
