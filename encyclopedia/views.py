@@ -3,12 +3,15 @@ import markdown2
 from django import forms
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.db.models import Max
 import random
+
 from . import util
+from .models import User, Entry
 
 class SearchForm(forms.Form):
     search = forms.CharField(label="Recherche",
-                            max_length=100,
+                            max_length=255,
                             widget= forms.TextInput
                             (attrs={'class':'search',
 				            'placeholder':'Chercher une page'
@@ -16,13 +19,13 @@ class SearchForm(forms.Form):
 
 class CreateForm(forms.Form):
     title = forms.CharField(label="Titre de la nouvelle page",
-                            max_length=100,
+                            max_length=255,
                             widget= forms.TextInput
                             (attrs={'class':'form-control',
 				            'placeholder':'Titre'
                             }))
     textarea = forms.CharField(label="Texte de la page (format Markdown)",
-                            max_length=1000,
+                            max_length=4000,
                             widget= forms.Textarea
                             (attrs={'class':'form-control',
                             'placeholder':'Texte'
@@ -30,13 +33,13 @@ class CreateForm(forms.Form):
 
 class EditForm(forms.Form):
     title = forms.CharField(label="Titre de la page",
-                            max_length=100,
+                            max_length=255,
                             widget= forms.TextInput
                             (attrs={'class':'form-control',
 				            'placeholder':'Titre'
                             }))
     textarea = forms.CharField(label="Texte de la page (format Markdown)",
-                            max_length=1000,
+                            max_length=4000,
                             widget= forms.Textarea
                             (attrs={'class':'form-control',
                             'placeholder':'Texte'
@@ -44,41 +47,39 @@ class EditForm(forms.Form):
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries(),
+        "entries": Entry.objects.all(),
         "searchform": SearchForm()
     })
 
-def title(request, title):
-    if util.get_entry(title):
-        content = markdown2.markdown(util.get_entry(title))
+def page(request, entry_id):
+    try:
+        entry = Entry.objects.get(pk=entry_id)
+        content = markdown2.markdown(entry.content)
         return render(request, "encyclopedia/page.html", {
-        "title": title,
+        "title": entry.title,
+        "entry_id": entry.id,
         "page": content,
         "searchform": SearchForm()
         })
-    else:
-        return render(request, "encyclopedia/404.html")
+    except Entry.DoesNotExist:
+        return render(request, "encyclopedia/404.html", {
+            "searchform": SearchForm(),
+        })
 
 def search(request):
     if request.method == "POST":
         form = SearchForm(request.POST)
-        searchlist = []
         if form.is_valid():
             search = form.cleaned_data["search"]
-            if util.get_entry(search):
-                return HttpResponseRedirect(f"wiki/{ search }")
-            for entry in util.list_entries():
-                if search.lower() in entry.lower(): 
-                    searchlist.append(entry)
-            if searchlist:
+            searchresult = Entry.objects.filter(title__icontains=search)
+            if len(searchresult) != 0:
                 return render(request, "encyclopedia/search.html", {
                         "search": search,
-                        "searchlist": searchlist,
+                        "searchlist": searchresult,
                         "searchform": form
                     })
             else:
                 return render(request, "encyclopedia/404.html", {
-                        "form": form,
                         "searchform": form
                     })
         else:
@@ -95,16 +96,18 @@ def create(request):
         if form.is_valid():
             title = form.cleaned_data["title"]
             textarea = form.cleaned_data["textarea"]
-            if util.get_entry(title):
+            try:
+                entrycheck = Entry.objects.get(title=title)
                 return render(request, "encyclopedia/create.html", {
                     "createform": form,
                     "searchform": SearchForm(),
                     "flash": True,
-                    "title": title,
+                    "entry_id": entrycheck.id,
                 })
-            else:
-                util.save_entry(title, textarea)
-                return HttpResponseRedirect(f"wiki/{ title }")
+            except Entry.DoesNotExist:
+                newentry = Entry(title=title, content=textarea)
+                newentry.save()
+                return HttpResponseRedirect(f"wiki/{newentry.id}")
         else:
             return render(request, "encyclopedia/search.html", {
                 "createform": form,
@@ -115,40 +118,39 @@ def create(request):
         "searchform": SearchForm()
     })
 
-def edit(request, edit):
+def edit(request, entry_id):
+    try:
+        entry = Entry.objects.get(pk=entry_id)
+    except Entry.DoesNotExist:
+            return render(request, "encyclopedia/404.html", {
+            "searchform": SearchForm() 
+            })
     if request.method == "POST":
         form = EditForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data["title"]
-            if not util.get_entry(title):
-                return render(request, "encyclopedia/edit.html", {
-                    "title": edit,
-                    "editform": form,
-                    "searchform": SearchForm(),
-                    "flash": "Cette page n'existe pas, veuillez la créer."
-                })
-            textarea = form.cleaned_data["textarea"]
-            util.save_entry(title, textarea)
-            return HttpResponseRedirect(f"/wiki/{ title }")
+            content = form.cleaned_data["textarea"]
+            entry.title = title
+            entry.content = content
+            entry.save()
+            return HttpResponseRedirect(f"/wiki/{entry.id}")
         else:
             return render(request, "encyclopedia/edit.html", {
-                "title": edit,
-                "editform": form,
-                "searchform": SearchForm()
+                "searchform" : SearchForm(),
+                "editform" : form,
+                "title" : entry.title,
+                "entry_id" : entry.id,
             })
     else:
-        if util.get_entry(edit):
-            form = EditForm(initial={'title': edit, 'textarea': util.get_entry(edit)})
-            return render(request, "encyclopedia/edit.html", {
-                "title": edit,
-                "editform": form,
-                "searchform": SearchForm()
-            })
-        else:
-            return render(request, "encyclopedia/404.html", {
-            "searchform": SearchForm() 
-            })
+        form = EditForm(initial={'title': entry.title, 'textarea': entry.content})
+        return render(request, "encyclopedia/edit.html", {
+            "searchform" : SearchForm(),
+            "editform" : form,
+            "title" : entry.title,
+            "entry_id" : entry.id,
+        })
 
 def rand(request):
-    pick = random.choice(util.list_entries())
-    return HttpResponseRedirect(f"/wiki/{ pick }")
+    max_id = Entry.objects.all().aggregate(max_id=Max("id"))['max_id']
+    pk = random.randint(1, max_id)
+    return HttpResponseRedirect(f"/wiki/{pk}")

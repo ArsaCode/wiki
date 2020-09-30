@@ -27,6 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['memogds.herokuapp.com']
 
+AUTH_USER_MODEL = 'encyclopedia.User'
 
 # Application definition
 

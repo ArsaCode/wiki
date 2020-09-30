@@ -13,7 +13,7 @@
     <body class="bg-dark text-white">
         <div class="row">
             <div class="sidebar bg-danger col-md-4 col-sm-12">
-                <h2>MemoGDS</h2>
+                    <h2>MemoGDS</h2>
                 <form action="{% url 'encyclopedia:search' %}" method="POST">
                     {% csrf_token %}
                     {{ searchform }}

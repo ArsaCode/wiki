@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Page : {{ title }}</h2>
-    <hr>
+    <h1>{{ title }}</h2>
+    <div class="separator">
+    </div>
     {{ page | safe }}
     <div>
-        <a class="btn btn-danger btn-lg mt-4" href="{% url 'encyclopedia:edit' edit=title %}">Modifier cette page</a>
+        <a class="btn btn-danger btn-lg mt-4" href="{% url 'encyclopedia:edit' entry_id %}">Modifier cette page</a>
     </div>
 {% endblock %}

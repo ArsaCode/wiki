@@ -8,7 +8,7 @@
     <h1>Toutes les pages</h1>
 
         {% for entry in entries %}
-                <a class="btn btn-danger text-white mx-2 my-3 py-3" href="{% url 'encyclopedia:title' title=entry %}">{{ entry }}</a>
+                <a class="btn btn-danger text-white mx-2 my-3 py-3" href="{% url 'encyclopedia:page' entry_id=entry.id %}">{{ entry }}</a>
         {% endfor %}
 
 {% endblock %}

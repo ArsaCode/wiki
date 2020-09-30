@@ -74,3 +74,9 @@ body a {
 .btn {
     border-radius: 40px!important;
 }
+
+.separator {
+    display: block;
+    height: 1px;
+    background-color: white;
+}

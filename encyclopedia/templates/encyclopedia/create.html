@@ -8,7 +8,7 @@
     <h1>Créer une page</h1>
     {% if flash %}
         <div class="alert alert-danger" role="alert">
-        Cette page existe déjà. Regardez <a href="{% url 'encyclopedia:title' title %}">ici</a>.
+        Cette page existe déjà. Regardez <a href="{% url 'encyclopedia:page' entry_id %}">ici</a>.
         </div>
     {% endif %}
     <form action="{% url 'encyclopedia:create' %}" method="POST">

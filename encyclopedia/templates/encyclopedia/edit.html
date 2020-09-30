@@ -11,11 +11,11 @@
         {{ flash }}
         </div>
     {% endif %}
-    <form action="{% url 'encyclopedia:edit' edit=title %}" method="POST">
+    <form action="{% url 'encyclopedia:edit' entry_id %}" method="POST">
         {% csrf_token %}
         {{ editform }}
         <div class="createsubmitbtn">
-            <input class="btn btn-danger btn-lg" type="submit">
+            <input class="btn btn-danger btn-lg" type="submit" value="Modifier">
         </div>
     </form>
 {% endblock %}
